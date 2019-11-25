@@ -31,7 +31,7 @@ class Hopfield():
         t1 = np.sum(np.sum(V,axis=0)**2)
         t2 = np.sum(np.sum(V,axis=1)**2)
         primeV = np.hstack([V[:,1:], V[:,0:1]])
-        t3 = V*np.matmul(distance,primeV)
+        t3 = np.matmul(distance,primeV)*V
         return 0.5*(self.A*(t1+t2)+self.D*np.sum(t3))
     
     def get_path(self, V):
@@ -108,11 +108,8 @@ class Hopfield():
                     best_length = length
                     best_route = route
                     best_E = E
-                    print("epoch: "+str(i), end="\t")
-                    print("route: ", end="")
-                    print((np.array(route)+1).tolist(), end="\t")
-                    print("distance: "+str(best_length), end="\t")
-                    print("energy: "+str(E))
+                    print("epoch: {:d}\t route: {}\t distance: {:.2f}\t energy: {:.2f}".format(i,(np.array(route)+1).tolist(), best_length, E))
+
                     plt.clf()
                     plt.scatter(cities[0],cities[1])
                     sp = cities[0,best_route+[best_route[0]]]
@@ -137,5 +134,5 @@ class Hopfield():
 if __name__ == "__main__":
     
 
-    hopfield = Hopfield(0.01, 1.5, 1.0, 0.02, 100000, 20)
+    hopfield = Hopfield(0.05, 1.5, 0.5, 0.02, 50000, 15)
     hopfield.test()
